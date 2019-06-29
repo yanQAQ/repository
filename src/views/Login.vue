@@ -4,16 +4,16 @@
       <div id="logo-box">
         <img src="../assets/img/logo.png" alt />
       </div>
-      <el-form ref="loginFormRef" :model="loginForm">
-        <el-form-item>
+      <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules">
+        <el-form-item prop="username">
           <el-input v-model="loginForm.username"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input v-model="loginForm.userpass"></el-input>
         </el-form-item>
         <el-row>
           <el-col push="15">
-            <el-button type="primary">登录</el-button>
+            <el-button type="primary" @click="login()">登录</el-button>
             <el-button type="info">重置</el-button>
           </el-col>
         </el-row>
@@ -24,12 +24,25 @@
 
 <script>
 export default {
+  methods: {
+    login () {
+      this.$router.push('/home')
+    }
+  },
   data () {
     return {
       // 用户登录表单数据对象(用户名、密码)
       loginForm: {
         username: '',
         password: ''
+      },
+      // 给 各个表单域 定义校验规则
+      loginFormRules: {
+        username: [
+          // required:非空  message:错误提示  trigger:触发校验机制
+          { required: true, message: '请输入用户名称', trigger: 'blur' }
+        ],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       }
     }
   }
