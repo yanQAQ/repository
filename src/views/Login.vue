@@ -6,15 +6,17 @@
       </div>
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules">
         <el-form-item prop="username">
+          <i class="el-icon-user"></i>
           <el-input v-model="loginForm.username"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginForm.userpass"></el-input>
+          <i class="el-icon-lock"></i>
+          <el-input v-model="loginForm.password" show-password></el-input>
         </el-form-item>
         <el-row>
           <el-col push="15">
             <el-button type="primary" @click="login()">登录</el-button>
-            <el-button type="info">重置</el-button>
+            <el-button type="info" @click="$refs.loginFormRef.resetFields()">重置</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -26,15 +28,34 @@
 export default {
   methods: {
     login () {
-      this.$router.push('/home')
+      this.$refs.loginFormRef.validate(async valid => {
+        // valid===true 校验ok
+        // valid===false 校验失败
+        if (valid) {
+          // 把用户名和密码交给axios，之后去服务器端做真实性校验
+          // var {data:dt} 对象结构赋值重命名操作
+          var { data: dt } = await this.$http.post('login', this.loginForm)
+
+          // 登录失败判断
+          if (dt.meta.status !== 200) {
+            return this.$message.error(dt.meta.msg)
+          }
+
+          // 存储token到sessionStorage里边
+          window.sessionStorage.setItem('token', dt.data.token)
+          // console.log(dt)
+          // 页面跳转
+          this.$router.push('/home')
+        }
+      })
     }
   },
   data () {
     return {
       // 用户登录表单数据对象(用户名、密码)
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       // 给 各个表单域 定义校验规则
       loginFormRules: {
@@ -49,7 +70,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 #login-container {
   background-color: #2b4b6b;
   height: 100%;
@@ -69,6 +90,23 @@ export default {
       width: 100%;
       padding: 20px;
       box-sizing: border-box;
+      input.el-input__inner {
+        padding: 0px 40px;
+      }
+      .el-icon-user {
+        font-size: 20px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 2;
+      }
+      .el-icon-lock {
+        font-size: 20px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 2;
+      }
     }
     #logo-box {
       width: 130px;
