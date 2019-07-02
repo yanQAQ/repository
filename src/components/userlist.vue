@@ -6,6 +6,33 @@
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card class="box-card">
+      <!-- 用户分配角色的对话框-->
+      <el-dialog
+        title="分配角色"
+        :visible.sync="setRoleDialog"
+        width="30%"
+        @close="$refs.serRoleRef.resetFields()"
+      >
+        <el-form :rules="setRoleRules" ref="setRoleRef" :model="setRole" label-width="120px">
+          <el-form-item label="当前用户：" prop="username">{{setRole.username}}</el-form-item>
+          <el-form-item label="目前角色：" prop="role_name">{{setRole.role_name}}</el-form-item>
+          <el-form-item label="分配新角色：" prop="rid">
+            <el-select v-model="setRole.rid" placeholder="请选择">
+              <el-option
+                v-for="item in roleList"
+                :key="item.id"
+                :label="item.roleName"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="setRoleDialog=false">取消</el-button>
+          <el-button @click="fenrole()" type="primary">确定</el-button>
+        </span>
+      </el-dialog>
+      <!-- 添加用户的对话框-->
       <el-dialog
         title="添加用户"
         :visible.sync="addUserDialog"
@@ -31,6 +58,7 @@
           <el-button type="primary" @click="tianjia()">确 定</el-button>
         </span>
       </el-dialog>
+      <!-- 修改用户的对话框-->
       <el-dialog
         title="修改用户"
         :visible.sync="editUserDialog"
@@ -48,7 +76,6 @@
             <el-input v-model="editUser.mobile"></el-input>
           </el-form-item>
         </el-form>
-
         <span slot="footer" class="dialog-footer">
           <el-button @click="editDialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="xiugai()">确 定</el-button>
@@ -98,7 +125,7 @@
                 <el-button
                   size="mini"
                   type="warning"
-                  @click="set(scope.$index, scope.row)"
+                  @click="showSetRoleDialog(info.row)"
                   icon="el-icon-setting"
                 ></el-button>
               </el-tooltip>
@@ -137,6 +164,19 @@ export default {
       callback()
     }
     return {
+      // 角色分配数据
+      setRoleRules: {
+        rid: [
+          { required: true, message: '必须选取一个角色', trigger: 'change' }
+        ]
+      },
+      roleList: [],
+      setRoleDialog: false,
+      setRole: {
+        username: '',
+        role_name: '',
+        rid: 0
+      },
       editUserDialog: false,
       // form表单需要的数据
       editUser: {
@@ -181,6 +221,32 @@ export default {
     }
   },
   methods: {
+    // 分配角色相关
+    fenrole () {
+      this.$refs.setRoleRef.validate(async valid => {
+        if (valid === true) {
+          const { data: dt } = await this.$http.put(
+            `users/${this.setRole.id}/role`,
+            { rid: this.setRole.rid }
+          )
+          if (dt.meta.status !== 200) {
+            return this.$message.error(dt.meta.msg)
+          }
+          this.$message.success(dt.meta.msg)
+          this.setRoleDialog = false
+          this.getUserList()
+        }
+      })
+    },
+    async showSetRoleDialog (user) {
+      const { data: dt } = await this.$http.get('roles')
+      if (dt.meta.status !== 200) {
+        return this.$message.error(dt.meta.msg)
+      }
+      this.roleList = dt.data
+      this.setRole = user
+      this.setRoleDialog = true
+    },
     async changeState (user, state) {
       const { data: dt } = await this.$http.put(
         `users/${user.id}/state/${state}`
