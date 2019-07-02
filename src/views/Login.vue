@@ -14,7 +14,7 @@
           <el-input v-model="loginForm.password" show-password></el-input>
         </el-form-item>
         <el-row>
-          <el-col push="15">
+          <el-col>
             <el-button type="primary" @click="login()">登录</el-button>
             <el-button type="info" @click="$refs.loginFormRef.resetFields()">重置</el-button>
           </el-col>
