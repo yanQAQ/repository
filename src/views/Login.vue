@@ -42,8 +42,11 @@ export default {
           }
 
           // 存储token到sessionStorage里边
+          this.$message({
+            message: '登录成功',
+            type: 'success'
+          })
           window.sessionStorage.setItem('token', dt.data.token)
-          // console.log(dt)
           // 页面跳转
           this.$router.push('/home')
         }
