@@ -151,9 +151,10 @@ export default {
   .el-menu-item {
     color: #fff;
     &.is-active {
-      color: #409eff;
+      color: #000;
     }
-    &:hover {
+    &:hover,
+    &:focus {
       color: #000;
     }
   }
