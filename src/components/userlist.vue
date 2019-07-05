@@ -11,7 +11,7 @@
         title="分配角色"
         :visible.sync="setRoleDialog"
         width="30%"
-        @close="$refs.serRoleRef.resetFields()"
+        @close="$refs.setRoleRef.resetFields()"
       >
         <el-form :rules="setRoleRules" ref="setRoleRef" :model="setRole" label-width="120px">
           <el-form-item label="当前用户：" prop="username">{{setRole.username}}</el-form-item>
