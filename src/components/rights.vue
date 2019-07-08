@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <el-card>
       <template>
-        <el-table :data="tableData" stripe border style="width: 100%">
+        <el-table :data="tableData" stripe border style="width: 99%">
           <el-table-column type="index" label="序号" width="180"></el-table-column>
           <el-table-column prop="authName" label="权限名称" width="180"></el-table-column>
           <el-table-column prop="path" label="路径"></el-table-column>
