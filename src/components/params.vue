@@ -79,7 +79,6 @@
                   v-model="inputValue"
                   ref="saveTagInput"
                   size="small"
-                  @keyup.enter.native="handleInputConfirm(props.row.attr_vals,'add',props.row.attr_name,props.row.attr_id)"
                   @blur="handleInputConfirm(props.row.attr_vals,'add',props.row.attr_name,props.row.attr_id)"
                 ></el-input>
                 <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
