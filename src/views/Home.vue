@@ -8,14 +8,7 @@
       </el-header>
       <el-container>
         <el-radio-group v-model="isCollapse" style="display: none;"></el-radio-group>
-        <el-menu
-          default-active="1-4-1"
-          class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
-          :collapse="isCollapse"
-          router
-        >
+        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse" router>
           <div class="openKey" @click="keyF()">| | |</div>
           <el-submenu v-for="item in menuList" :key="item.id" :index="item.id+''">
             <template slot="title">
@@ -57,12 +50,6 @@ export default {
     }
   },
   methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    },
     keyF () {
       this.isCollapse = !this.isCollapse
     },

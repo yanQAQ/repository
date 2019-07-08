@@ -11,6 +11,7 @@ import Params from './components/params.vue'
 import Categories from './components/categories.vue'
 import Orders from './components/orders.vue'
 import Reports from './components/reports.vue'
+import Goodsadd from './components/goodsadd.vue'
 
 Vue.use(Router)
 
@@ -48,6 +49,9 @@ var router = new Router({
     }, {
       path: '/reports',
       component: Reports
+    }, {
+      path: '/goodsadd',
+      component: Goodsadd
     }]
   }]
 })

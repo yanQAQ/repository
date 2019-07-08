@@ -6,6 +6,43 @@
       <el-breadcrumb-item>订单列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
+      <!-- 物流显示 -->
+      <el-dialog title="物流信息" :visible.sync="showDialog" width="50%">
+        <el-steps direction="vertical" :active="0">
+          <div v-for="item in logInfo" :key="item.id">
+            <el-step :title="item.time" :description="item.context"></el-step>
+          </div>
+        </el-steps>
+      </el-dialog>
+      <!-- 修改订单信息 -->
+      <el-dialog title="订单信息修改" :visible.sync="orderDialog" width="50%">
+        <div class="edit">
+          <span>是否发货：</span>
+          <el-radio v-model="radio" label="1">已发货</el-radio>
+          <el-radio v-model="radio" label="0">未发货</el-radio>
+        </div>
+        <div class="edit">
+          <span>是否付款：</span>
+          <el-radio v-model="radio2" label="1" disabled>已付款</el-radio>
+          <el-radio v-model="radio2" label="0" disabled>未付款</el-radio>
+        </div>
+        <div class="edit">
+          <span>支付方式：</span>
+          <el-radio v-model="orderPay" label="0">未支付</el-radio>
+          <el-radio v-model="orderPay" label="1">支付宝</el-radio>
+          <el-radio v-model="orderPay" label="2">微信</el-radio>
+          <el-radio v-model="orderPay" label="3">银行卡</el-radio>
+        </div>
+        <div class="edit">
+          <span>订单价格&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <el-input-number v-model="price" :min="1" :max="1000" label="描述文字" size="mini"></el-input-number>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="orderDialog = false">取 消</el-button>
+          <el-button type="primary" @click="orderEdit()">确 定</el-button>
+        </span>
+      </el-dialog>
+      <!--  -->
       <div class="text item">
         <div style="margin-bottom: 15px;" class="el-row">
           <el-input
@@ -35,14 +72,14 @@
               <el-button
                 size="mini"
                 type="primary"
-                @click="showEditDialog(info.row.goods_id)"
+                @click="showEditDialog(info.row.order_id)"
                 icon="el-icon-edit"
               ></el-button>
               <el-button
                 size="mini"
-                type="danger"
-                @click="delGoods(info.row.goods_id)"
-                icon="el-icon-delete"
+                type="success"
+                @click="showlog(info.row.order_id)"
+                icon="el-icon-location"
               ></el-button>
             </template>
           </el-table-column>
@@ -69,24 +106,15 @@ export default {
   },
   data () {
     return {
-      // 修改商品数据
-      editGoods: {},
-      editGoodsDialog: false,
-      editGoodsRules: {
-        goods_name: [
-          { required: true, message: '商品名称必填', trigger: 'blur' }
-        ],
-        goods_price: [
-          { required: true, message: '商品价格必填', trigger: 'blur' }
-        ],
-        goods_weight: [
-          { required: true, message: '商品重量必填', trigger: 'blur' }
-        ],
-        goods_number: [
-          { required: true, message: '商品数量必填', trigger: 'blur' }
-        ]
-      },
+      orderPay: '',
+      price: '',
+      radio: '',
+      radio2: '',
+      orderId: '',
+      orderDialog: false,
+      showDialog: false,
       OrdersList: [],
+      logInfo: [],
       // 查询数据条件
       tot: 0,
       querycdt: {
@@ -98,34 +126,47 @@ export default {
   },
   methods: {
     // 根据订单查询物流
-    async showEditDialog (id) {
-      const { data: res } = await this.$http.get('goods/' + id)
+    async showlog (id) {
+      const { data: res } = await this.$http.get('/kuaidi/' + undefined)
+      console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error(res.meta.msg)
       }
-      this.editGoods = res.data
-      this.editGoodsDialog = true
+      this.logInfo = res.data
+      this.showDialog = true
     },
     // 修改订单
-    EditOrders () {
-      this.$refs.editGoodsRef.validate(async valid => {
-        if (valid) {
-          // 校验成功处理， 收集数据存储入库
-          const { data: res } = await this.$http.put(
-            'goods/' + this.editGoods.goods_id,
-            this.editGoods
-          )
-          // 修改失败提示
-          if (res.meta.status !== 200) {
-            return this.$message.error(res.meta.msg)
-          }
-          // 修改成功：关闭对话框、成功提示、页面数据更新
-          console.log(res)
-          this.editGoodsDialog = false
-          this.$message.success(res.meta.msg)
-          this.getOrdersList()
-        }
+    async showEditDialog (id) {
+      this.orderDialog = true
+      this.orderId = id
+      const { data: res } = await this.$http.get(`orders/${id}`)
+      if (res.meta.status !== 200) {
+        return this.$message.error(res.meta.msg)
+      }
+      if (res.data.is_send === '否') {
+        this.radio = '0'
+      } else {
+        this.radio = '1'
+      }
+      this.price = res.data.order_price
+      this.radio2 = res.data.pay_status
+      this.orderPay = res.data.order_pay
+    },
+    async orderEdit () {
+      console.log(this.orderId)
+      const { data: res } = await this.$http.put(`orders/${+this.orderId}`, {
+        is_send: this.radio,
+        pay_status: this.radio2,
+        order_price: this.price,
+        order_pay: this.orderPay
       })
+      console.log(res)
+      if (res.meta.status !== 201) {
+        return this.$message.error(res.meta.msg)
+      }
+      this.$message.success(res.meta.msg)
+      this.getOrdersList()
+      this.orderDialog = false
     },
     // 获取订单列表
     async getOrdersList () {
@@ -170,5 +211,11 @@ export default {
 }
 .el-dialog__body .el-input {
   width: 100%;
+}
+.edit {
+  padding: 20px 10px;
+  span {
+    margin-right: 10px;
+  }
 }
 </style>

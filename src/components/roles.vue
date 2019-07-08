@@ -72,7 +72,7 @@
                   <el-tag
                     closable
                     type="primary"
-                    @close="handleClose(props.row.id,item.id)"
+                    @close="handleClose(props.row.id,item.id);props.row.children.splice(props.row.children.indexOf(item.id), 1)"
                   >{{item.authName}}</el-tag>
                   <i class="el-icon-caret-right"></i>
                 </el-col>
@@ -82,7 +82,7 @@
                       <el-tag
                         closable
                         type="success"
-                        @close="handleClose(props.row.id,item2.id)"
+                        @close="handleClose(props.row.id,item2.id);item.children.splice(item.children.indexOf(item2.id), 1)"
                       >{{item2.authName}}</el-tag>
                       <i class="el-icon-caret-right"></i>
                     </el-col>
@@ -92,7 +92,7 @@
                         type="warning"
                         v-for="item3 in item2.children"
                         :key="item3.id"
-                        @close="handleClose(props.row.id,item3.id)"
+                        @close="handleClose(props.row.id,item3.id);item2.children.splice(item2.children.indexOf(item3.id), 1)"
                       >{{item3.authName}}</el-tag>
                     </el-col>
                   </el-row>
@@ -186,7 +186,6 @@ export default {
         return this.$message.error(res.meta.msg)
       }
       this.$message.success(res.meta.msg)
-      this.getRolesList()
     },
     async Roledis () {
       const { data: res } = await this.$http.post(
