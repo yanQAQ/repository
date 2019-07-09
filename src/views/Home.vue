@@ -124,7 +124,7 @@ export default {
     height: 25px;
     line-height: 25px;
   }
-  background-color: #333744;
+  background-color: #333744 !important;
   height: 100%;
   color: #fff;
   .el-submenu__title {
