@@ -15,6 +15,8 @@ import {
   Submenu,
   MenuItem,
   Input,
+  Radio,
+  InputNumber,
   Checkbox,
   CheckboxGroup,
   Switch,
@@ -54,7 +56,9 @@ Vue.use(Menu)
 Vue.use(Submenu)
 Vue.use(MenuItem)
 Vue.use(Input)
+Vue.use(InputNumber)
 Vue.use(Checkbox)
+Vue.use(Radio)
 Vue.use(CheckboxGroup)
 Vue.use(Switch)
 Vue.use(Select)
