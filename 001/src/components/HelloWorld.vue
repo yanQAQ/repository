@@ -1,57 +1,106 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <el-form ref="form" :model="form" label-width="80px">
+      <el-form-item class="first">
+        <el-radio-group v-model="form.resource">
+          <el-radio label="药品"></el-radio>
+          <el-radio label="耗材"></el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-row :gutter="20">
+        <el-col :span="3">
+          <el-form-item porp="region">
+            <el-select v-model="form.region" placeholder="选择区县">
+              <el-option label="区域一" value="shanghai"></el-option>
+              <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item porp="region2">
+            <el-select v-model="form.region2" placeholder="医药机构名称">
+              <el-option label="区域一" value="shanghai"></el-option>
+              <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item porp="name">
+            <el-input v-model="form.name" placeholder="机构项目名称"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item porp="name2">
+            <el-input v-model="form.name2" placeholder="医保项目名称"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item porp="date1">
+            <el-date-picker
+              type="date"
+              placeholder="开始日期"
+              v-model="form.date1"
+              style="width: 100%;"
+            ></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item porp="date2">
+            <el-date-picker
+              type="date"
+              placeholder="结束日期"
+              v-model="form.date2"
+              style="width: 100%;"
+            ></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-button type="warning" @click="onSubmit">查询</el-button>
+          <el-button @click="resetForm('form')">重置</el-button>
+        </el-col>
+        <el-col :span="3">
+          <el-button type="warning">导出明细</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
+  form = {
+    name: "",
+    name2: "",
+    region: "",
+    region2: "",
+    date1: "",
+    date2: "",
+    delivery: false,
+    type: [],
+    resource: "",
+    desc: ""
+  };
+  onSubmit() {
+    console.log(this.form, "submit!");
+  }
+  resetForm(formName) {
+    console.log(this.$refs[formName], "========");
+    this.$refs[formName].resetFields();
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style lang="less" scoped>
+.first {
+  text-align: left;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.second {
+  display: flex;
 }
 </style>
