@@ -10,7 +10,7 @@
       </el-form-item>
       <el-row :gutter="20">
         <el-col :span="3">
-          <el-form-item porp="region">
+          <el-form-item>
             <el-select v-model="form.region" placeholder="选择区县">
               <el-option label="区域一" value="shanghai"></el-option>
               <el-option label="区域二" value="beijing"></el-option>
@@ -18,7 +18,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-form-item porp="region2">
+          <el-form-item>
             <el-select v-model="form.region2" placeholder="医药机构名称">
               <el-option label="区域一" value="shanghai"></el-option>
               <el-option label="区域二" value="beijing"></el-option>
@@ -26,17 +26,17 @@
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-form-item porp="name">
+          <el-form-item>
             <el-input v-model="form.name" placeholder="机构项目名称"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-form-item porp="name2">
+          <el-form-item>
             <el-input v-model="form.name2" placeholder="医保项目名称"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-form-item porp="date1">
+          <el-form-item>
             <el-date-picker
               type="date"
               placeholder="开始日期"
@@ -46,7 +46,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="3">
-          <el-form-item porp="date2">
+          <el-form-item>
             <el-date-picker
               type="date"
               placeholder="结束日期"
@@ -88,9 +88,20 @@ export default class HelloWorld extends Vue {
   onSubmit() {
     console.log(this.form, "submit!");
   }
-  resetForm(formName) {
-    console.log(this.$refs[formName], "========");
-    this.$refs[formName].resetFields();
+  resetForm(formName:String) {
+    console.log(this.$refs[`${formName}`], "========");
+    this.$data[`${formName}`] = {
+      name: "",
+      name2: "",
+      region: "",
+      region2: "",
+      date1: "",
+      date2: "",
+      delivery: false,
+      type: [],
+      resource: "",
+      desc: ""
+    };
   }
 }
 </script>

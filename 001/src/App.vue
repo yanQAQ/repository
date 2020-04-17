@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <HelloWorld msg="TypeScript App"/>
+    <!-- <HelloWorld msg="TypeScript App"/> -->
+    <router-view></router-view>
   </div>
 </template>
 
@@ -23,6 +24,6 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
 }
 </style>
