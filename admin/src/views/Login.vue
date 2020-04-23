@@ -3,11 +3,11 @@
     <div class="login-card">
       <el-card shadow="hover" class="card">
         <img class="avatar" :src="circleUrl" />
-        <el-form ref="form" label-position="left" :model="form" label-width="0px">
-          <el-form-item>
+        <el-form ref="form" :rules="formRules" label-position="left" :model="form" label-width="0px">
+          <el-form-item prop="name">
             <el-input placeholder="手机号/邮箱/用户名" v-model="form.name"></el-input>
           </el-form-item>
-          <el-form-item class="mb">
+          <el-form-item class="mb" prop="password">
             <el-input placeholder="密码" v-model="form.password" type="password"></el-input>
           </el-form-item>
           <el-form-item label class="xieyi">
@@ -15,7 +15,7 @@
           </el-form-item>
           <el-form-item class="btn">
             <div class="dl">
-              <el-button type="primary" size="medium">登录</el-button>
+              <el-button type="primary" size="medium" @click="login">登录</el-button>
             </div>
             <!-- <div>
               <el-button size="medium">立即注册</el-button>
@@ -41,6 +41,23 @@ export default class Login extends Vue {
     password: ""
   };
   checked = true;
+  formRules={
+    name:[
+      {required:true,message:"请输入手机号/邮箱/用户名",trigger:"blur"}
+    ],
+    password:[
+      {required:true,message:"请输入密码",trigger:"blur"}
+    ]
+  }
+  login(){
+    this.$refs["form"].validate(valid=>{
+      if(valid){
+        console.log("发起请求")
+      }else{
+        alert("请输入正确的用户名或者密码")
+      }
+    })
+  }
 }
 </script>
 <style lang='less' scoped>
