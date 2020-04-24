@@ -18,7 +18,14 @@ Vue.use(VueRouter)
   {
     path: '/nav',
     name: 'nav',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Navbar.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Navbar.vue'),
+    children:[
+      {
+        path:'home',
+        name:'home',
+        component:()=>import('../views/IFRAME.vue')
+    }
+    ]
   }
 ]
 

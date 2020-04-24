@@ -64,9 +64,7 @@
         </el-menu>
       </el-aside>
       <el-main>
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/nav' }">首页</el-breadcrumb-item>
-        </el-breadcrumb>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
