@@ -132,4 +132,13 @@ export default class Navbar extends Vue {
 .el-header {
   padding: 0;
 }
+.el-menu-demo {
+  box-shadow: 0px  2px 2px #ccc ;
+  border: none;
+}
+.el-menu-vertical-demo {
+  box-shadow: 2px  0px 2px #ccc ;
+  border:none;
+  height:calc(100vh - 60px);
+}
 </style>

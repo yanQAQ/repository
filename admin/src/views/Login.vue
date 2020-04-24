@@ -3,7 +3,13 @@
     <div class="login-card">
       <el-card shadow="hover" class="card">
         <img class="avatar" :src="circleUrl" />
-        <el-form ref="form" :rules="formRules" label-position="left" :model="form" label-width="0px">
+        <el-form
+          ref="form"
+          :rules="formRules"
+          label-position="left"
+          :model="form"
+          label-width="0px"
+        >
           <el-form-item prop="name">
             <el-input placeholder="手机号/邮箱/用户名" v-model="form.name"></el-input>
           </el-form-item>
@@ -15,11 +21,11 @@
           </el-form-item>
           <el-form-item class="btn">
             <div class="dl">
-              <el-button type="primary" size="medium" @click="login">登录</el-button>
+              <el-button type="primary" native-type="submit" size="medium" @click="login">登录</el-button>
             </div>
             <!-- <div>
               <el-button size="medium">立即注册</el-button>
-            </div> -->
+            </div>-->
           </el-form-item>
           <el-form-item class="btn">
             <el-link type="primary" class="left" :underline="false">忘记密码？</el-link>
@@ -31,6 +37,7 @@
   </div>
 </template>
 <script>
+import Cookies from "js-cookie";
 import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Login extends Vue {
@@ -41,22 +48,27 @@ export default class Login extends Vue {
     password: ""
   };
   checked = true;
-  formRules={
-    name:[
-      {required:true,message:"请输入手机号/邮箱/用户名",trigger:"blur"}
+  formRules = {
+    name: [
+      { required: true, message: "请输入手机号/邮箱/用户名", trigger: "blur" }
     ],
-    password:[
-      {required:true,message:"请输入密码",trigger:"blur"}
-    ]
-  }
-  login(){
-    this.$refs["form"].validate(valid=>{
-      if(valid){
-        console.log("发起请求")
-      }else{
-        alert("请输入正确的用户名或者密码")
+    password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+  };
+  login() {
+    this.$refs["form"].validate(valid => {
+      if (valid) {
+        console.log("发起请求");
+        Cookies.set("token", "asdf123456", { expires: 7 });
+        Cookies.set("account", `${this.form.name}`, { expires: 7 });
+        this.$router.push("/nav");
+      } else {
+        alert("请输入正确的用户名或者密码");
       }
-    })
+    });
+  }
+  created() {
+    const token = Cookies.get("token");
+    token && this.$router.push("/nav");
   }
 }
 </script>
