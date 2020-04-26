@@ -129,6 +129,6 @@ export default class Navbar extends Vue {
   box-shadow: 2px  0px 2px rgba(222,222,222,1) ;
 }
 .el-menu-vertical-demo {
-  height:calc(100vh - 60px);
+  height:calc(100vh - 80px);
 }
 </style>
