@@ -2,6 +2,9 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const productionGzipExtensions = ['js', 'css']
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -42,6 +45,15 @@ module.exports = {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     name: name,
+    plugins: [
+      new CompressionWebpackPlugin({
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
+      threshold: 10240,
+      minRatio: 0.8
+      })
+    ],
     resolve: {
       alias: {
         '@': resolve('src')
@@ -51,7 +63,6 @@ module.exports = {
   chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
-
     // set svg-sprite-loader
     config.module
       .rule('svg')
