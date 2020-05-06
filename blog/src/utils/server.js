@@ -40,7 +40,7 @@ const ArtClassData = (callback) => {
                 sessionStorage.setItem('classList',JSON.stringify(num.data.data));
                 callback && callback(num.data.data)
             }else{
-                alert("查询失败")
+                console.log("查询失败")
             }
         })
     }
@@ -59,7 +59,7 @@ const navMenList  = (callback) => {
                 sessionStorage.setItem('navMenList',JSON.stringify(num.data.data));
                 callback && callback(num.data.data)
             }else{
-                alert("查询失败")
+                console.log("查询失败")
             }
         })
     }
@@ -84,7 +84,7 @@ const getArticleInfo = (artId,userId,callback) =>{
         if(num.data.code==1001){
             callback && callback(num.data.data);
         }else{
-            alert("查询失败");
+            console.log("查询失败");
         }
     })
 }
@@ -98,7 +98,7 @@ const ShowBrowseCount = (callback) =>{
         }else if(num.data.code==1005){
             return;
         }else{
-            alert("查询失败");
+            console.log("查询失败");
         }
     })
 }
@@ -112,7 +112,7 @@ const ShowArtCommentCount = (callback) =>{
         }else if(num.data.code==1005){
             return;
         }else{
-            alert("查询失败");
+            console.log("查询失败");
         }
     })
 }
@@ -156,7 +156,7 @@ const showLikeData = (callback) =>{
             // console.log(num.data,parseInt(num.data));
             callback && callback(num.data.data);
         }else{
-            alert("查询失败");
+            console.log("查询失败");
         }
     })
 }
@@ -168,7 +168,7 @@ const GetLike = (like_num,callback) =>{
         if(num.data.code==1001){
             callback && callback(num.data.msg);
         }else{
-            alert("点赞失败");
+            console.log("点赞失败");
         }
     })
 }
@@ -182,7 +182,7 @@ const FriendUrlData = (callback) =>{
         }else if(num.data.code==1005){
             return;
         }else{
-            alert("查询失败");
+            console.log("查询失败");
         }
     })
 }
@@ -201,7 +201,7 @@ const AboutMeData = (callback) =>{
             }else if(num.data.code==1005){
                 return;
             }else{
-                alert("查询失败");
+                console.log("查询失败");
             }
         })
     }
@@ -219,7 +219,7 @@ const getArtLikeCollect = (userId,artId,islike,callback) =>{
         if(num.data.code==1001){
             callback && callback(num.data.msg);
         }else{
-            alert("查询失败");
+            console.log("查询失败");
         }
     })
 }
@@ -231,7 +231,7 @@ const AdmireData = (callback) => {
         if(num.data.code==1001){
             callback && callback(num.data);
         }else{
-            alert("查询失败");
+            console.log("查询失败");
         }
     })
 }
@@ -256,7 +256,7 @@ const getUserInfo = (userId,callback)=>{
         if(num.data.code==1001){
             callback && callback(num.data);
         }else{
-            alert("查询失败");
+            console.log("查询失败");
         }
     })
 }
@@ -283,7 +283,7 @@ const UserInfoSave = (obj,callback) =>{
         if(num.data.code==1001){
             callback && callback(num.data.msg);
         }else{
-            alert("保存失败");
+            console.log("保存失败");
         }
     })
 }
@@ -321,7 +321,7 @@ const changeTheme = (callback) => {
                 sessionStorage.setItem('changeThemeObj',JSON.stringify(num.data.data))
                 callback && callback(num.data.data);
             }else{
-                alert("查询失败");
+                console.log("查询失败");
             }
         })
     }
