@@ -7,10 +7,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "./components/HelloWorld.vue";
 @Component({
   components: {
-    HelloWorld
   }
 })
 export default class App extends Vue {
@@ -31,7 +29,7 @@ export default class App extends Vue {
 }
 #app::after {
   content: "";
-  background: url("./assets/background/01.jpeg");
+  /* background: url("./assets/background/01.jpeg"); */
   opacity: 0.2;
   top: 0;
   left: 0;
